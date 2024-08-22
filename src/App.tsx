@@ -14,7 +14,7 @@ interface Task {
 function App() {
   const dispatch: AppDispatch = useDispatch();
   const tasks = useSelector((state: RootState) => state.tasks.taskArray);
-  const tasksAmount = tasks.filter(task => !task.completed).length;
+  const tasksAmount = tasks.filter(task => !task.completed).length+1;
 
   useEffect(() => {
     // Retrieve tasks from localStorage on initial render
