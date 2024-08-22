@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Task from './components/Task';
 import TaskAdder from './components/TaskAdder';
@@ -14,19 +14,26 @@ interface Task {
 function App() {
   const dispatch: AppDispatch = useDispatch();
   const tasks = useSelector((state: RootState) => state.tasks.taskArray);
-  const tasksAmount = tasks.filter(task => !task.completed).length;
+  const [initialLoad, setInitialLoad] = useState(false);
+  const [tasksAmount, setTasksAmount] = useState(0);
 
   useEffect(() => {
     // Retrieve tasks from localStorage on initial render
-    const storedTasks = JSON.parse(window.localStorage.getItem('tasks') || '[]');
+    if (!initialLoad) {
+      const storedTasks = JSON.parse(window.localStorage.getItem('tasks') || '[]');
+      storedTasks.forEach((task: Task) => dispatch(addTask(task)));
+      setInitialLoad(true); // Ensure this effect only runs once
+    }
+  }, [initialLoad, dispatch]);
 
-    storedTasks.forEach((task: Task) => dispatch(addTask(task))); //the dispatch recognizes a change and tells and gices the store the change and the store takes the change and renders it
-  }, [dispatch]); // useEffect will only re-run if the dispatch function changes, even if the change is not in current file
 
   useEffect(() => {
-    // Store tasks in localStorage when tasks change
+    // Update tasksAmount based on the number of incomplete tasks
     window.localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]); //useEffect will only re-run if the tasks array changes  
+
+    const pendingTasks = tasks.filter(task => !task.completed).length;
+    setTasksAmount(pendingTasks);
+  }, [tasks]);
 
   const handleAddTask = (taskInfo: string) => {
     const newTask: Task = { taskInfo, completed: false };
