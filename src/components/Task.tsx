@@ -20,16 +20,13 @@ const Task: React.FC<TaskProps> = ({ taskInfo, completed, index }) => {
       <div className="bring-closer">
         <button
           onClick={() => dispatch(toggleComplete(index))} // Dispatch the toggleComplete action with the task index
-          className="complete-btn"
-        >
+          className="complete-btn">
           {completed ? "uncheck" : "complete"}
         </button>
         <button
           onClick={() => dispatch(deleteTask(index))} // Dispatch the deleteTask action with the task index
           id="red"
-          className="delete-btn"
-        >
-          X
+          className="delete-btn"> X
         </button>
       </div>
     </div>
