@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Task from "../components/Task";
-import { ReducerAction } from "react";
 
 interface Task {
     taskInfo: string;  

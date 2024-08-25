@@ -7,8 +7,9 @@ import { RootState, AppDispatch } from './store/store';
 import { addTask, deleteTask, toggleComplete } from './store/taskSlice';
 
 interface Task {
-  taskInfo: string;  // The description of the task
-  completed: boolean;  // Whether the task is completed or not
+  taskInfo: string;  
+  completed: boolean; 
+  // index is not here because it's not a part of the task data itself
 }
 
 function App() {
@@ -24,10 +25,11 @@ function App() {
       console.log("Loading tasks from localStorage...");
       const storedTasks = JSON.parse(window.localStorage.getItem('tasks') || '[]'); 
       console.log("Stored tasks:", storedTasks);
-      storedTasks.forEach((task: Task) => dispatch(addTask(task))); // Dispatch each task to add it to the Redux store
+      storedTasks.forEach((task: Task) => dispatch(addTask(task))); // Dispatch each task to add it to the Redux store,(WHEN REFRESH IT TAKES THE STOREDTASKS INTO THE STORE!!!!)
       hasLoadedTasks.current = true; // Mark that tasks have been loaded to prevent re-running this logic
     }
   }, []);
+
   // useEffect to update localStorage whenever the tasks array changes
   useEffect(() => {
     console.log("Tasks changed:", tasks);
@@ -44,15 +46,6 @@ function App() {
     dispatch(addTask(newTask)); // Dispatch action to add the new task to the Redux store
   };
 
-  // Handler to delete a task by its index
-  const handleDeleteTask = (index: number) => {
-    dispatch(deleteTask(index)); // Dispatch action to delete the task from the Redux store
-  };
-
-  // Handler to toggle the completion status of a task by its index
-  const handleToggleComplete = (index: number) => {
-    dispatch(toggleComplete(index)); // Dispatch action to toggle the task's completed status
-  };
 
   return (
     <div className='container'>
@@ -61,15 +54,14 @@ function App() {
         {/* Render each task in the tasks array */}
         {tasks.map((task, index) => (
           <Task 
-            key={index}  // Unique key for each task based on its index
-            taskInfo={task.taskInfo}  // Pass task description as a prop
-            completed={task.completed} // Pass task completion status as a prop
-            deleteTask={() => handleDeleteTask(index)}  // Pass delete handler as a prop
-            toggleComplete={() => handleToggleComplete(index)} // Pass toggle completion handler as a prop
+            taskInfo={task.taskInfo}  
+            completed={task.completed}
+            key={index}  
+            index={index}
           />
         ))}
       </div>
-      <TaskAdder addTask={handleAddTask} /> {/* Component to add a new task */}
+      <TaskAdder/> {/* Component to add a new task */}
     </div>
   );
 }
