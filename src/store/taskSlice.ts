@@ -69,3 +69,9 @@ export default taskSlice.reducer;
  * - The `deleteTask` function uses the action’s payload (an index) to remove a task from the state at that specific position.
  * - The `toggleComplete` function uses the action’s payload (an index) to flip the completion status of a task in the state.
  */
+
+/* 
+When you dispatch an action (e.g., by calling a reducer function) from a component, it updates the Redux store's state.
+This update to the store's state can trigger a re-render of any component that subscribes to the relevant part of the state.
+
+*/
