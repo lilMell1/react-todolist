@@ -1,18 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Task from "../components/Task";
+import { act } from "react";
+
 
 interface Task {
-    taskInfo: string;  
-    completed: boolean;  
-}
+    taskInfo: string;
+    completed: boolean;
+    id: string;
+};
 
-interface TaskArray {
-    taskArray: Task[];  
-}
+interface Task {
+    taskInfo: string;
+    completed: boolean;
+};
+
+type TaskArray = {
+    taskArray: Task[];
+};
 
 const initialState: TaskArray = {
-    taskArray: [] 
-}
+    taskArray: []
+};
+
 
 // This is where we define how tasks are managed
 const taskSlice = createSlice({
@@ -20,28 +29,27 @@ const taskSlice = createSlice({
     initialState,   // Starts with the empty list of tasks defined above
     reducers: {
         // This function adds a new task to the list
-        addTask(state, action: PayloadAction<Task>) {
+        addTask(state: TaskArray, action: PayloadAction<Task>) { //sends the state if the store and the payload of the thing i want to change
             state.taskArray.push(action.payload); // Adds the new task to the list
         },
 
-        // This function removes a task from the list based on its position (index)
-        deleteTask(state, action: PayloadAction<number>) {
-            state.taskArray.splice(action.payload, 1); // Removes one task at the given position
+        deleteTask(state: TaskArray, action: PayloadAction<string>) {
+            state.taskArray = state.taskArray.filter(task =>  task.id !== action.payload); // Removes one task at the given position
         },
 
-        toggleComplete(state, action: PayloadAction<number>) {
-            const currTask = state.taskArray[action.payload]; // Finds the task at the given position
-            if (currTask) {
-                currTask.completed = !currTask.completed; // Changes the task from done to not done, or vice versa
-            }
-        }
+        toggleComplete(state: TaskArray, action: PayloadAction<string>) {
+            const currTask = state.taskArray.find(task => task.id === action.payload)!; // Finds the task at the given position
+            currTask.completed = !currTask.completed; // Changes the task from done to not done, or vice versa         
+        },
+      
+        
     }
 });
 
 // These are the functions (addTask, deleteTask, toggleComplete) that other parts of the app will use to change the tasks
 export const { addTask, deleteTask, toggleComplete } = taskSlice.actions;
 
-// This is the part of the code that will actually handle all the task-related changes in the app
+// This is the part of the code that will actually handle all the task-related changes in the app, exports the new taskArray
 export default taskSlice.reducer;
 
 

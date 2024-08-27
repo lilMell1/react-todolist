@@ -1,11 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
+import { configureStore, StoreCreator } from '@reduxjs/toolkit';
+import { persistStore, persistReducer, WebStorage } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import taskReducer from './taskSlice';
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
 // Persist configuration
-const persistConfig = {
+
+type PersistConfig = {
+  key: string;
+  storage: WebStorage;
+}
+const persistConfig : PersistConfig = {
   key: 'root',
   storage,
 };

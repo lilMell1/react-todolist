@@ -6,7 +6,7 @@ import { addTask } from '../store/taskSlice'; // Import your addTask action
 interface Task {
   taskInfo: string;  
   completed: boolean; 
-  // index is not here because it's not a part of the task data itself
+  id:string;
 }
 
 const TaskAdder: React.FC = () => {
@@ -15,21 +15,24 @@ const TaskAdder: React.FC = () => {
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {
-      const newTask: Task = { taskInfo: inputValue, completed: false }; // Create a new task object
+      const newTask: Task = { id: new Date().toISOString(), taskInfo: inputValue, completed: false }; // Create a new task object
       dispatch(addTask(newTask)); // Dispatch action to add the new task to the Redux store
       setInputValue(''); // Clear input field
     }
   };
 
   return (
-    <input
-      className='input-info'
-      type="text"
-      value={inputValue}
-      onChange={(e) => setInputValue(e.target.value)}
-      onKeyDown={handleKeyDown}
-      placeholder="Add a new task and press Enter"
-    />
+    <div style={{height:'15%' ,display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <input
+        className='input-info'
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="Add a new task and press Enter"
+      />
+    </div>
+
   );
 };
 

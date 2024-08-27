@@ -2,15 +2,16 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
 import { deleteTask, toggleComplete } from '../store/taskSlice';
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 interface TaskProps {
   taskInfo: string;
   completed: boolean;
-  index: number; // You need the index to identify the task in the array
+  id: string;
 }
 
-const Task: React.FC<TaskProps> = ({ taskInfo, completed, index }) => {
-  const dispatch: AppDispatch = useDispatch(); 
+const Task: React.FC<TaskProps> = ({ taskInfo, completed, id }) => {
+  const dispatch: AppDispatch = useDispatch();
 
   return (
     <div className="task-container">
@@ -19,14 +20,17 @@ const Task: React.FC<TaskProps> = ({ taskInfo, completed, index }) => {
       </p>
       <div className="bring-closer">
         <button
-          onClick={() => dispatch(toggleComplete(index))} // Dispatch the toggleComplete action with the task index
-          className="complete-btn">
-          {completed ? "uncheck" : "complete"}
+          onClick={() => dispatch(toggleComplete(id))}
+          className="complete-btn"
+        >
+          {completed ? "Uncheck" : "Complete"}
         </button>
         <button
-          onClick={() => dispatch(deleteTask(index))} // Dispatch the deleteTask action with the task index
+          onClick={() => dispatch(deleteTask(id))}
           id="red"
-          className="delete-btn"> X
+          className="delete-btn"
+        >
+          <RiDeleteBin6Line />
         </button>
       </div>
     </div>
