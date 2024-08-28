@@ -1,32 +1,30 @@
 import React from 'react';
 
-type TaskFilterProps = {
-  showAll: () => void;
-  showCompleted: () => void;
-  showOnlyNotFinished: () => void;
+interface TaskFilterProps {
+  handleFilterChange: (filter: 'all' | 'completed' | 'notFinished') => void;
   activeFilter: 'all' | 'completed' | 'notFinished';
 };
 
-const TaskFilter: React.FC<TaskFilterProps> = ({ showAll, showCompleted, showOnlyNotFinished, activeFilter }) => {
+const TaskFilter: React.FC<TaskFilterProps> = ({ handleFilterChange, activeFilter }) => {
   return (
     <div className="filter-buttons">
       <button
-        className={`filter-button ${activeFilter === 'all' ? 'active' : ''}`}
-        onClick={showAll}
+        className={`filter-button ${activeFilter === 'all' ? 'active' : ''}`} //active is enabeling the white border around the pressed button
+        onClick={() => handleFilterChange('all')}
       >
         Show All
       </button>
       <button
         className={`filter-button ${activeFilter === 'completed' ? 'active' : ''}`}
-        onClick={showCompleted}
+        onClick={() => handleFilterChange('completed')}
       >
-        Show Completed
+        Completed
       </button>
       <button
         className={`filter-button ${activeFilter === 'notFinished' ? 'active' : ''}`}
-        onClick={showOnlyNotFinished}
+        onClick={() => handleFilterChange('notFinished')}
       >
-        Show Not Finished
+        Pending
       </button>
     </div>
   );

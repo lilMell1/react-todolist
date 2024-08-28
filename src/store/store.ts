@@ -7,15 +7,16 @@ import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist
 // Persist configuration
 
 type PersistConfig = {
-  key: string;
+  key: "root";
   storage: WebStorage;
-}
+} 
 const persistConfig : PersistConfig = {
-  key: 'root',
+  key: 'root', //the root key in the local storage
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, taskReducer);
+const persistedReducer = persistReducer(persistConfig, taskReducer);// This allows your task data to be automatically saved and 
+                                                                    //rehydrated ()
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -23,6 +24,8 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        // Configures the default middleware to ignore serialization warnings for specific redux-persist actions.
+        // This is necessary because these actions often involve non-serializable data.
       },
     }),
 });

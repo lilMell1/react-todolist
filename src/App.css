@@ -158,11 +158,10 @@ button:active {
   background-color: #45a049; /* Slightly darker green */
 }
 
-.filter-button:active {
-  transform: translateY(2px);
-}
+
 
 .filter-button.active {
+  transform: translateY(2px);
   background-color: #2e7d32; /* Darker green to indicate active state */
   border: 2px solid #ffffff; /* Optional: Add a white border */
 }

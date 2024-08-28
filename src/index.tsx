@@ -11,11 +11,13 @@ if (container) {
   const root = ReactDOM.createRoot(container);
   
   root.render(
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
+    <React.StrictMode>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
+    </React.StrictMode>
   );
 } else {
   console.error('Root container not found');

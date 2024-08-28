@@ -1,20 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import Task from "../components/Task";
-import { act } from "react";
+import {Task} from "../components/Task";
 
-
-interface Task {
-    taskInfo: string;
-    completed: boolean;
-    id: string;
-};
-
-interface Task {
-    taskInfo: string;
-    completed: boolean;
-};
-
-type TaskArray = {
+interface TaskArray {
     taskArray: Task[];
 };
 
@@ -40,9 +27,7 @@ const taskSlice = createSlice({
         toggleComplete(state: TaskArray, action: PayloadAction<string>) {
             const currTask = state.taskArray.find(task => task.id === action.payload)!; // Finds the task at the given position
             currTask.completed = !currTask.completed; // Changes the task from done to not done, or vice versa         
-        },
-      
-        
+        },          
     }
 });
 

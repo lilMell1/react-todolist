@@ -1,61 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import TaskAdder from './components/TaskAdder';
 import './App.css';
 import { RootState } from './store/store';
-import TaskChooser from './components/TaskChooser';
 import TaskFilter from './components/TaskFilter';
-
-type Task = {
-  taskInfo: string;
-  completed: boolean;
-  id: string;
-};
+import TaskList from './components/TaskList';
+import {Task} from './components/Task';
 
 function App() {
   const tasks = useSelector((state: RootState) => state.taskArray);
   const [displayedTasks, setDisplayedTasks] = useState<Task[]>(tasks);
-  const [activeFilter, setActiveFilter] = useState<'all' | 'completed' | 'notFinished'>('all');
+  const activeFilter = useRef<'all' | 'completed' | 'notFinished'>('all');
 
   const tasksAmount = tasks.filter(task => !task.completed).length;
   console.log("Pending tasks count:", tasksAmount);
 
-  useEffect(() => {
-    if (activeFilter === 'all') {
-      setDisplayedTasks(tasks);
-    } else if (activeFilter === 'completed') {
-      setDisplayedTasks(tasks.filter(task => task.completed));
-    } else if (activeFilter === 'notFinished') {
-      setDisplayedTasks(tasks.filter(task => !task.completed));
+  const updateDisplayedTasks = (filter: 'all' | 'completed' | 'notFinished') => {
+    activeFilter.current = filter;
+
+    switch (filter) {
+      case 'all':
+        setDisplayedTasks(tasks);
+        break;
+      case 'completed':
+        setDisplayedTasks(tasks.filter(task => task.completed));
+        break;
+      case 'notFinished':
+        setDisplayedTasks(tasks.filter(task => !task.completed));
+        break;
+      default:
+        setDisplayedTasks(tasks);
     }
-  }, [tasks, activeFilter]);
-
-  const showAll = () => {
-    setDisplayedTasks(tasks);
-    setActiveFilter('all');
   };
 
-  const showCompleted = () => {
-    setDisplayedTasks(tasks.filter(task => task.completed));
-    setActiveFilter('completed');
-  };
-
-  const showOnlyNotFinished = () => {
-    setDisplayedTasks(tasks.filter(task => !task.completed));
-    setActiveFilter('notFinished');
-  };
+  useEffect(() => {
+    updateDisplayedTasks(activeFilter.current);
+  }, [tasks]); // Re-renders when tasks change, for example if i delete or add it needs to filter the displayedTasks again.
 
   return (
-    <div style={{height: '100vh', width:'100vw',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-      <TaskFilter 
-        showAll={showAll} 
-        showCompleted={showCompleted} 
-        showOnlyNotFinished={showOnlyNotFinished} 
-        activeFilter={activeFilter}
+    <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+      <TaskFilter
+        handleFilterChange={updateDisplayedTasks}
+        activeFilter={activeFilter.current}
       />
       <div className='container'>
         <TaskHeader tasksAmount={tasksAmount} />
-        <TaskChooser tasks={displayedTasks} />
+        <TaskList tasks={displayedTasks} />
         <TaskAdder />
       </div>
     </div>

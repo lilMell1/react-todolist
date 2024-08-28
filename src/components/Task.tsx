@@ -4,13 +4,13 @@ import { AppDispatch } from '../store/store';
 import { deleteTask, toggleComplete } from '../store/taskSlice';
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-interface TaskProps {
+export interface Task {
   taskInfo: string;
   completed: boolean;
   id: string;
 }
 
-const Task: React.FC<TaskProps> = ({ taskInfo, completed, id }) => {
+export const Task: React.FC<Task> = ({ taskInfo, completed, id }) => {
   const dispatch: AppDispatch = useDispatch();
 
   return (

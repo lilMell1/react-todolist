@@ -1,13 +1,8 @@
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useState, KeyboardEvent } from 'react'; //{named exports}, default exports
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
 import { addTask } from '../store/taskSlice'; // Import your addTask action
-
-interface Task {
-  taskInfo: string;  
-  completed: boolean; 
-  id:string;
-}
+import { Task } from './Task';
 
 const TaskAdder: React.FC = () => {
   const dispatch: AppDispatch = useDispatch(); 

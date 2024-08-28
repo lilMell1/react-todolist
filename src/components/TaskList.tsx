@@ -1,19 +1,13 @@
 import React from 'react';
 import Task from './Task';
 
-type Task = {
-    taskInfo: string;
-    completed: boolean;
-    id: string;
-};
-
-type TaskListProps = {
+interface TaskListProps {
     tasks: Task[];
 };
 
 const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
     return (
-        <div style={{ width: '100%' }}>
+        <div  className='tasks-container'>
             {tasks.length > 0 ? (
                 tasks.map((task) => (
                     <Task 
@@ -22,10 +16,9 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
                         key={task.id}
                         id={task.id}
                     />
-                ))
-            ) : (
-                <p>No tasks to show</p>
-            )}
+                ))) : (
+                <p style={{color:'white'}}>No tasks to show</p>
+                )}
         </div>
     );
 };
