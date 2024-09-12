@@ -7,7 +7,7 @@ interface TaskListProps {
 
 const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
     return (
-        <div  className='tasks-container'>
+        <div className='tasks-container'>
             {tasks.length > 0 ? (
                 tasks.map((task) => (
                     <Task 
