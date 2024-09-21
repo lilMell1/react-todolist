@@ -1,14 +1,13 @@
 import React from 'react';
 import Task from './Task';
-import { Task as TaskType } from './Task';
+import { Taskprops } from './Task';
 
 interface TaskListProps {
-  tasks: TaskType[];
+  tasks: Taskprops[];
   userId: string;
-  setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;  // Pass setTasks to modify the task list
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks, userId }) => {
+const TaskList: React.FC<TaskListProps> = ({ tasks, userId }) => {
   return (
     <div className="tasks-container">
       {tasks.length > 0 ? (
@@ -19,7 +18,6 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, setTasks, userId }) => {
             title={task.title}
             completed={task.completed}
             userId={userId}  // Assuming you have userId, this might also come from the task or parent
-            setTasks={setTasks}  // Pass setTasks to Task
           />
         ))
       ) : (

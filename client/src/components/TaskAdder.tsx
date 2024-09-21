@@ -1,14 +1,17 @@
 import React, { useState, KeyboardEvent } from 'react';
 import axios from 'axios';
-import { Task } from './Task';
+import { Taskprops } from './Task';
+import { useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../store/store';
+import { addTaskReducer } from '../store/taskSlice';
 
 interface TaskAdderProps {
   userId: string;
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;  // Function to update the task list
 }
 
-const TaskAdder: React.FC<TaskAdderProps> = ({ userId, setTasks }) => {
+const TaskAdder: React.FC<TaskAdderProps> = ({ userId }) => {
   const [inputValue, setInputValue] = useState('');
+  const dispatch: AppDispatch = useDispatch(); // Hook to dispatch actions to the Redux store
 
   const handleKeyDown = async (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {
@@ -16,8 +19,7 @@ const TaskAdder: React.FC<TaskAdderProps> = ({ userId, setTasks }) => {
         // Send the new task to the server
         const response = await axios.post(`http://localhost:3001/api/users/${userId}/tasks`, { title: inputValue });
         
-        // Add the new task (response.data) to the list
-        setTasks(prevTasks => [...prevTasks, response.data]);
+        dispatch(addTaskReducer(response.data));
 
         setInputValue('');  // Clear input field
       } catch (error) {

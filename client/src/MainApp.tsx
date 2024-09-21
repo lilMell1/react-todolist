@@ -1,57 +1,51 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';  // Import useNavigate for redirect
-import axios from 'axios';
 import TaskFilter from './components/TaskFilter';
 import TaskList from './components/TaskList';
 import TaskAdder from './components/TaskAdder';
-import { Task } from './components/Task';
+import { Taskprops } from './components/Task';
+import Task from './components/Task';
+import { RootState, AppDispatch } from './store/store';
+import { fetchTasks } from './store/taskSlice'; // Import the thunk
+import { useDispatch, useSelector } from 'react-redux';
 
 const MainApp: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
   const { userId } = location.state || {};  // Get userId from the passed state
-  
-  const [tasks, setTasks] = useState<Task[]>([]);  // Manage tasks
-  const [displayedTasks, setDisplayedTasks] = useState<Task[]>([]);  // Displayed filtered tasks
+  const [displayedTasks, setDisplayedTasks] = useState<Taskprops[]>([]);  // Displayed filtered tasks
   const activeFilter = useRef<'all' | 'completed' | 'notFinished'>('all');  // Track current filter
-  const tasksAmount = tasks.filter(task => !task.completed).length;  // Count incomplete tasks
+  const tasksArray:Taskprops[] = useSelector((state: RootState) => state.tasks.taskArray);
+  const tasksAmount:number = tasksArray.filter(task => !task.completed).length;  // Count incomplete tasks
 
-  // Fetch tasks when component mounts
+
   useEffect(() => {
-    const fetchTasks = async () => {
-      if (!userId) {
-        navigate('/login');  // Redirect to login if no userId is found
-        return;
-      }
-      try {
-        const response = await axios.get(`http://localhost:3001/api/users/${userId}/tasks`);
-        setTasks(response.data);  // Set fetched tasks in state
-        setDisplayedTasks(response.data);  // Initially, show all tasks
-      } catch (error) {
-        console.error('Error fetching tasks:', error);  // Log error if fetching fails
-      }
-    };
+    if (!userId) {
+      navigate('/login'); // Redirect to login if no userId
+    } else {
+      dispatch(fetchTasks(userId));  // Dispatch the thunk to fetch tasks
+    }
+  }, []); //changed here -- lookout
 
-    fetchTasks();  // Call the function on component mount
-  }, [userId, navigate]);
 
   // Function to update displayed tasks based on the selected filter
   const updateDisplayedTasks = (filter: 'all' | 'completed' | 'notFinished') => {
     activeFilter.current = filter;
-    let filteredTasks: Task[] = [];
+    let filteredTasks: Taskprops[] = [];
     
     switch (filter) {
       case 'all':
-        filteredTasks = tasks;
+        filteredTasks = tasksArray;
         break;
       case 'completed':
-        filteredTasks = tasks.filter(task => task.completed);
+        filteredTasks = tasksArray.filter(task => task.completed);
         break;
       case 'notFinished':
-        filteredTasks = tasks.filter(task => !task.completed);
+        filteredTasks = tasksArray.filter(task => !task.completed);
         break;
       default:
-        filteredTasks = tasks;
+        filteredTasks = tasksArray;
     }
 
     setDisplayedTasks(filteredTasks);  // Update displayed tasks
@@ -60,15 +54,15 @@ const MainApp: React.FC = () => {
   // Update displayed tasks when the tasks array changes
   useEffect(() => {
     updateDisplayedTasks(activeFilter.current);
-  }, [tasks]);
+  }, [tasksArray]);
 
   return (
     <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
       <TaskFilter handleFilterChange={updateDisplayedTasks} activeFilter={activeFilter.current} />
       <div className='container'>
         <TaskHeader tasksAmount={tasksAmount} />
-        <TaskList tasks={displayedTasks} setTasks={setTasks} userId={userId} />  {/* Pass setTasks to TaskList */}
-        <TaskAdder userId={userId} setTasks={setTasks} />  {/* Pass setTasks to TaskAdder */}
+        <TaskList tasks={displayedTasks}  userId={userId} />  {/* Pass setTasks to TaskList */}
+        <TaskAdder userId={userId}  />  {/* Pass setTasks to TaskAdder */}
       </div>
     </div>
   );
