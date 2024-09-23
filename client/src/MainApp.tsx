@@ -4,10 +4,10 @@ import TaskFilter from './components/TaskFilter';
 import TaskList from './components/TaskList';
 import TaskAdder from './components/TaskAdder';
 import { Taskprops } from './components/Task';
-import Task from './components/Task';
 import { RootState, AppDispatch } from './store/store';
-import { fetchTasks } from './store/taskSlice'; // Import the thunk
+import { fetchTasks } from './store/taskSlice'; 
 import { useDispatch, useSelector } from 'react-redux';
+import './css/MainApp.css'; 
 
 const MainApp: React.FC = () => {
   const location = useLocation();
@@ -57,14 +57,17 @@ const MainApp: React.FC = () => {
   }, [tasksArray]);
 
   return (
-    <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+    <div className='mainapp-body'>
+      <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
       <TaskFilter handleFilterChange={updateDisplayedTasks} activeFilter={activeFilter.current} />
-      <div className='container'>
+      <div className='mainapp-container'>
         <TaskHeader tasksAmount={tasksAmount} />
         <TaskList tasks={displayedTasks}  userId={userId} />  {/* Pass setTasks to TaskList */}
         <TaskAdder userId={userId}  />  {/* Pass setTasks to TaskAdder */}
       </div>
     </div>
+    </div>
+    
   );
 };
 

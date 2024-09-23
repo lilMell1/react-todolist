@@ -1,7 +1,6 @@
-import express from 'express';
+import express, { Router } from 'express';
 import { addTask, updateTask, deleteTask } from '../controllers/taskController';
-
-const router = express.Router();
+const router:Router = express.Router();
 
 // Add new task to user
 router.post('/users/:userId/tasks', addTask);
@@ -13,3 +12,5 @@ router.put('/users/:userId/tasks/:taskId', updateTask);
 router.delete('/users/:userId/tasks/:taskId', deleteTask);
 
 export default router;
+
+// there can be the same routh for diffrenet functions!, the use of each will be decided by the front sending(using), each function.

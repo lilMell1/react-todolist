@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
-import { User } from '../models/User';  // Assuming User is your Mongoose model
+import { User } from '../models/User';  
 import {IUser} from '../models/User'
 
 // Register user
 export const registerUser = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { username, password }: { username: string; password: string }  = req.body;
 
   try {
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
+    const existingUser:IUser|null = await User.findOne({ username });
+    if (existingUser?.username) { //'?' checks for null or undefined and AFTER that '.username' checks if username already exists
       return res.status(400).json({ message: 'User already exists' });
     }
 
@@ -23,10 +23,9 @@ export const registerUser = async (req: Request, res: Response) => {
 
 // Login user
 export const loginUser = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { username, password } : { username: string; password: string }  = req.body;
 
   try {
-    console.log("WOW!");
     const user:IUser|null = await User.findOne({ username });
     if (!user || user.password !== password) {
       return res.status(400).json({ message: 'Invalid username or password' });

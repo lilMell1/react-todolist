@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
-body {
+body{
+  margin: 0;
+}
+.mainapp-body {
   height: 100vh;
   width: 100vw;
   background-color: orange;
@@ -12,7 +15,7 @@ body {
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-.container {
+.mainapp-container {
   display: flex;
   flex-direction: column;
   border: 4px solid darkblue;
@@ -22,7 +25,7 @@ body {
   width: 50vw;
 }
 
-.container .pending-text {
+.mainapp-container .mainapp-pending-text {
   display: flex;
   height: fit-content;
   /* border: 2px solid purple; */
@@ -39,7 +42,7 @@ h1 {
   font-size: x-large;
 }
 
-.tasks-container {
+.mainapp-tasks-container {
   /* border: 5px solid red;  */
   display: flex;
   flex-direction: column;
@@ -51,7 +54,7 @@ h1 {
   border-top: 2px solid rgba(128, 128, 128, 0.438);
 }
 
-.task-container {
+.mainapp-task-container {
   display: flex;
   border: 2px solid rgb(175, 159, 159);
   border-radius: 7px;
@@ -61,7 +64,7 @@ h1 {
   align-items: center;
 }
 
-.task-container p {
+.mainapp-task-container p {
   display: flex;
   align-items: center;
   padding-left: 0.5vw;
@@ -72,7 +75,7 @@ h1 {
   word-break: break-all;
 }
 
-.bring-closer {
+.mainapp-bring-closer {
   display: flex;
   /* border: 2px solid blue; */
   max-width: 60%;
@@ -82,7 +85,7 @@ h1 {
   justify-content: space-between;  
 }
 
-button {
+.mainapp-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,7 +116,7 @@ button:active {
   transform: translateY(3px);
 }
 
-.input-info{
+.mainapp-input-info{
   /* border: 2px solid red; */
   width: 80%;
   align-self: center;
@@ -124,7 +127,7 @@ button:active {
   font-size: x-large;
 }
 
-.filter-button {
+.mainapp-filter-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -143,7 +146,7 @@ button:active {
   transition: background-color 0.3s, transform 0.2s;
   /* border: 10px solid pink; */
 
-}.filter-buttons {
+}.mainapp-filter-buttons {
   /* border: 2px solid red; */
   display: flex;
   justify-content: center;

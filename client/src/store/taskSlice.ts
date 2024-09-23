@@ -20,7 +20,7 @@ const initialState: TaskState = {
   taskArray: [],
 };
 
-// Thunk for fetching tasks manually (without createAsyncThunk)
+// Thunk for fetching tasks manually 
 export const fetchTasks = (userId: string) => {
   return async (dispatch: AppDispatch) => {
     console.log("loading tasks");

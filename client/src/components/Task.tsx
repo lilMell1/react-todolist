@@ -9,11 +9,13 @@ export interface Taskprops {
   title: string;
   completed: boolean;
   _id: string;
-  userId: string;
 }
 
+export interface Props extends Taskprops{
+  userId:string
+}
 
-const Task: React.FC<Taskprops> = ({ title, completed, _id, userId }) => {
+const Task: React.FC<Props> = ({ title, completed, _id, userId }) => {
   const dispatch: AppDispatch = useDispatch();
   const [isCompleted, setIsCompleted] = useState(completed);
 
@@ -24,7 +26,7 @@ const Task: React.FC<Taskprops> = ({ title, completed, _id, userId }) => {
       const updateUrl = `http://localhost:3001/api/users/${userId}/tasks/${_id}`;
       await axios.put(updateUrl, { completed: !isCompleted }); // change the data base
 
-      // Dispatch the toggle completion action to Redux
+      // change the button
       dispatch(toggleCompleteReducer(_id ));
 
       // Update the local state for immediate UI feedback
@@ -48,21 +50,21 @@ const Task: React.FC<Taskprops> = ({ title, completed, _id, userId }) => {
   };
 
   return (
-    <div className="task-container">
+    <div className="mainapp-task-container">
       <p style={{ textDecoration: isCompleted ? 'line-through solid 2px white' : 'none' }}>
         {title}
       </p>
-      <div className="bring-closer">
+      <div className="mainapp-bring-closer">
         <button
           onClick={toggleComplete}
-          className="complete-btn"
+          className="mainapp-btn "
         >
           {isCompleted ? "Uncheck" : "Complete"}
         </button>
         <button
           onClick={deleteTask}
           id="red"
-          className="delete-btn"
+          className="mainapp-btn "
         >
           <RiDeleteBin6Line />
         </button>

@@ -1,0 +1,106 @@
+/* Reset browser default margin */
+body {
+  margin: 0;
+}
+
+/* General body styling */
+.login-body {
+  height: 100vh;
+  width: 100vw;
+  background-color: orange;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* Container for the form and image */
+.login-divider {
+  display: flex;
+  flex-direction: row-reverse; /* Image and form side by side */
+  justify-content: space-between;
+  align-items: center;
+  min-width: fit-content;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* Image container */
+.login-coolpicture {
+  /* border: 2px solid red; */
+  flex: 1;
+  padding: 20px;
+}
+
+.login-coolpicture img {
+  /* border: 2px solid green; */
+  display: flex;
+  /* background: url('../../public/stage.png'); */
+  background-repeat: no-repeat;                     /* Prevent the background from repeating */
+  background-size: cover;                           /* Make the background cover the entire container */
+  background-position: center; 
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+/* Form container */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+/* Input fields styling */
+.login-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Button styling */
+button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:active {
+  background-color: #3e8e41;
+}
+
+/* Message and Links */
+p {
+  margin: 10px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Responsive design: Stack form and image vertically on smaller screens */
+@media (max-width: 768px) {
+  .login-divider {
+    flex-direction: column;
+    width: 90%;
+    height: auto;
+  }
+
+  .login-coolpicture {
+    padding: 10px;
+  }
+}

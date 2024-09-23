@@ -7,21 +7,21 @@ interface TaskFilterProps {
 
 const TaskFilter: React.FC<TaskFilterProps> = ({ handleFilterChange, activeFilter }) => {
   return (
-    <div className="filter-buttons">
+    <div className="mainapp-filter-buttons">
       <button
-        className={`filter-button ${activeFilter === 'all' ? 'active' : ''}`} //active is enabeling the white border around the pressed button
+        className={`mainapp-filter-button ${activeFilter === 'all' ? 'active' : ''}`} //active is enabeling the white border around the pressed button
         onClick={() => handleFilterChange('all')}
       >
         Show All
       </button>
       <button
-        className={`filter-button ${activeFilter === 'completed' ? 'active' : ''}`}
+        className={`mainapp-filter-button ${activeFilter === 'completed' ? 'active' : ''}`}
         onClick={() => handleFilterChange('completed')}
       >
         Completed
       </button>
       <button
-        className={`filter-button ${activeFilter === 'notFinished' ? 'active' : ''}`}
+        className={`mainapp-filter-button ${activeFilter === 'notFinished' ? 'active' : ''}`}
         onClick={() => handleFilterChange('notFinished')}
       >
         Pending

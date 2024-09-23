@@ -17,9 +17,9 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true } 
   .catch((error) => console.error('Failed to connect to MongoDB:', error));
 
 // Use Routes
-app.use('/api', authRoutes);  // Handle auth (register, login)
-app.use('/api', taskRoutes);       // Handle task management (add, update, delete)
-app.use('/api', userRoutes);       // Handle fetching user tasks
+app.use('/api', authRoutes);       //  (register, login)
+app.use('/api', taskRoutes);       //  task management (add, update, delete)
+app.use('/api', userRoutes);       //  fetching user tasks
 
 // Start the server
 const PORT = 3001;

@@ -1,3 +1,14 @@
+proxy tells the front that any fetch will be sent to given port (3001 in my case):
+axios.get(https://myapi.com/api/todos'); without setting a proxy is same as:
+axios.get(/api/todos') with a proxy (in the json file) set to https://myapi.com
+
+On the web, a proxy server acts as a gateway or intermediary between you and external websites (or services on the internet).
+It sits between your browser and the external server, forwarding your requests to the internet and returning responses.
+
+Proxy in React (package.json): A development tool that forwards API requests from your front-end app
+to your back-end server, helping with CORS issues and simplifying the development process.
+It acts like a "none-existent" middleman because there’s no actual separate proxy server—just
+the React development server redirecting requests based on this configuration.
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -8,7 +8,7 @@ export interface ITask {
 export interface IUser extends Document {
   username: string;
   password: string;
-  tasks:  Types.DocumentArray<ITask>;
+  tasks: Types.DocumentArray<ITask>; // tasks is an array of sub-documents of type ITask that i can use mongoose functions on
 }
 
 const taskSchema = new Schema<ITask>({
@@ -23,3 +23,7 @@ const userSchema = new Schema<IUser>({
 });
 
 export const User = model<IUser>('User', userSchema);
+
+// By extending Document, we ensure that each user and task object inherits 
+// essential Mongoose methods and properties, like _id, save(), and id(), 
+// providing full Mongoose document functionality.
