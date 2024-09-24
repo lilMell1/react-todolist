@@ -1,15 +1,16 @@
 import React from 'react';
-
+import { useEffect } from 'react';
 interface TaskFilterProps {
   handleFilterChange: (filter: 'all' | 'completed' | 'notFinished') => void;
-  activeFilter: 'all' | 'completed' | 'notFinished'; 
-};
+  activeFilter: string;
+}
 
 const TaskFilter: React.FC<TaskFilterProps> = ({ handleFilterChange, activeFilter }) => {
+ 
   return (
     <div className="mainapp-filter-buttons">
       <button
-        className={`mainapp-filter-button ${activeFilter === 'all' ? 'active' : ''}`} //active is enabeling the white border around the pressed button
+        className={`mainapp-filter-button ${activeFilter === 'all' ? 'active' : ''}`} 
         onClick={() => handleFilterChange('all')}
       >
         Show All

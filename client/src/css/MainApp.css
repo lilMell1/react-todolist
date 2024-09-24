@@ -106,6 +106,7 @@ h1 {
   background-color: red;
 }
 
+
 button:hover {
   background-color: #275a29; /* Darker green */
 }
@@ -126,7 +127,6 @@ button:active {
   padding-left: 2vw;
   font-size: x-large;
 }
-
 .mainapp-filter-button {
   display: flex;
   align-items: center;
@@ -144,27 +144,30 @@ button:active {
   height: 70px; /* Adjust button height */
   font-family: "Plus Jakarta Sans", sans-serif; /* Ensure consistent font */
   transition: background-color 0.3s, transform 0.2s;
-  /* border: 10px solid pink; */
+}
 
-}.mainapp-filter-buttons {
-  /* border: 2px solid red; */
+/* Container for the buttons */
+.mainapp-filter-buttons {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
   width: 50%;
-
 }
 
-
-.filter-button:hover {
-  background-color: #45a049; /* Slightly darker green */
+/* Focused button styles */
+.mainapp-filter-button:focus {
+  border: 2px solid white; /* White border when button is focused */
 }
 
+/* Hover effect */
+.mainapp-filter-button:hover {
+  background-color: #45a049; /* Slightly darker green when hovered */
+}
 
-
-.filter-button.active {
+/* Active state for the button */
+.mainapp-filter-button.active {
   transform: translateY(2px);
   background-color: #2e7d32; /* Darker green to indicate active state */
-  border: 2px solid #ffffff; /* Optional: Add a white border */
+  border: 2px solid white; /* White border when active */
 }

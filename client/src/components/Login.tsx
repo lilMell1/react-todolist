@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import '../css/Login.css';
+import { useEffect } from 'react';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
+  
+  useEffect(() => {
+    // Clear history state on page load if you don't want to keep it
+      navigate('/login');  //clear the browser history when a user navigates back to the login page, ensuring they can’t use the "Forward" button to return to the app after logging out   
+  }, [navigate]);
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

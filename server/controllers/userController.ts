@@ -9,8 +9,7 @@ export const getUserTasks = async (req: Request<{ userId: string }>, res: Respon
   try {
     const user:IUser = (await User.findById(userId))!;
     if (!user) {
-      return res.status(404).json({ message: 'User not found' }); //I set the server to respond with an HTTP 404 status, which represents "Not Found." that being sent to the FRONT
-                                                                  // where the function has been called! 
+      return res.status(404).json({ message: 'User not found' }); 
     }
     res.status(200).json(user.tasks);  // Return the user's tasks
   } catch (error) {
