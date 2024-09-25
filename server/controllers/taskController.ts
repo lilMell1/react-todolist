@@ -1,29 +1,30 @@
 import { Request, Response } from 'express';
-import { User } from '../models/User';  // Assuming User is your Mongoose model
-import {IUser} from '../models/User'
+import { User } from '../models/User';
+import { IUser } from '../models/User';
 
 interface ITask {
   title: string;
   completed: boolean;
 }
-
+export interface IGetUserAuthInfoRequest extends Request {
+  user?: { userId: string } // Adjust the type based on your JWT middleware
+}
 // Add a new task
-//I set the server to respond with an HTTP 404 status, which represents "Not Found." that being sent to the FRONT
-// where the function has been called! 
-export const addTask = async (req: Request<{ userId: string }, { title: string }>, res: Response) => {
-  const { userId } : { userId:string } = req.params;
-  const { title } : { title:string } = req.body;
+export const addTask = async (req: IGetUserAuthInfoRequest, res: Response) => {
+  const { title } = req.body;  // Extract the title from the request body
+  const userId = req.user?.userId;  // Extract the userId from the JWT (set in your middleware)
 
   try {
-    const user:IUser|null = await User.findById(userId);
+    const user: IUser | null = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
     const newTask: ITask = { title, completed: false };
     user.tasks.push(newTask);
-    await user.save(); //await pauses the execution of the code in the current function until the promise is resolved or rejected. (because save function is async)
-    res.status(201).json(user.tasks[user.tasks.length - 1]); // Return the newly added task back to the front so i can change the redux store
+    await user.save();
+
+    res.status(201).json(user.tasks[user.tasks.length - 1]);  // Return the newly added task
   } catch (error) {
     console.error('Error adding task:', error);
     res.status(500).json({ message: 'Failed to add task' });
@@ -31,25 +32,26 @@ export const addTask = async (req: Request<{ userId: string }, { title: string }
 };
 
 // Update a task
-export const updateTask = async (req: Request<{ userId: string, taskId: string, completed: boolean }>, res: Response) => {
-  const { userId, taskId } : { userId:string, taskId:string } = req.params;
-  const { completed }: { completed:boolean } = req.body;
+export const updateTask = async (req: IGetUserAuthInfoRequest, res: Response) => {
+  const { completed } = req.body;  // Extract completed status from the request body
+  const userId = req.user?.userId;  // Extract the userId from the JWT
+  const { taskId } = req.params;  // Extract the taskId from the URL parameters
 
   try {
-    const user:IUser = (await User.findById(userId))!; 
+    const user: IUser | null = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const task:ITask = user.tasks.id(taskId)!;
+    const task = user.tasks.id(taskId);  // Find the task by taskId
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
 
     task.completed = completed !== undefined ? completed : task.completed;
-
     await user.save();
-    res.status(200).json(task);
+
+    res.status(200).json(task);  // Return the updated task
   } catch (error) {
     console.error('Error updating task:', error);
     res.status(500).json({ message: 'Failed to update task' });
@@ -57,22 +59,19 @@ export const updateTask = async (req: Request<{ userId: string, taskId: string, 
 };
 
 // Delete a task
-export const deleteTask = async (req: Request<{ userId: string, taskId: string }>, res: Response) => {
-  const { userId, taskId } = req.params;
+export const deleteTask = async (req: IGetUserAuthInfoRequest, res: Response) => {
+  const userId = req.user?.userId;  // Extract the userId from the JWT
+  const { taskId } = req.params;  // Extract the taskId from the URL parameters
 
   try {
-    const user:IUser = (await User.findById(userId))!;
+    const user: IUser | null = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // const task:ITask = user.tasks.id(taskId)!;
-    // if (!task) {
-    //   return res.status(404).json({ message: 'Task not found' });
-    // }
-
-    user.tasks.pull(taskId);
+    user.tasks.pull(taskId);  // Remove the task by taskId
     await user.save();
+
     res.status(200).json({ message: 'Task deleted successfully' });
   } catch (error) {
     console.error('Error deleting task:', error);

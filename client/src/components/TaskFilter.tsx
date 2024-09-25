@@ -1,8 +1,7 @@
 import React from 'react';
-import { useEffect } from 'react';
 interface TaskFilterProps {
   handleFilterChange: (filter: 'all' | 'completed' | 'notFinished') => void;
-  activeFilter: string;
+  activeFilter: 'all' | 'completed' | 'notFinished';
 }
 
 const TaskFilter: React.FC<TaskFilterProps> = ({ handleFilterChange, activeFilter }) => {

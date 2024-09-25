@@ -1,9 +1,9 @@
-const express = require('express')
+import express from 'express';
 import { getUserTasks } from '../controllers/userController';
-
+import { authenticateJWT } from '../middlewares/authMiddleware';
 const router = express.Router();
 
 // Get all tasks for a user
-router.get('/users/:userId/tasks', getUserTasks);
+router.get('/tasks', authenticateJWT, getUserTasks);
 
 export default router;

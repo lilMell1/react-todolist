@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';  // Import useNavigate for redirect
+import { useNavigate } from 'react-router-dom';  // Import useNavigate for redirect
 import TaskFilter from './components/TaskFilter';
 import TaskList from './components/TaskList';
 import TaskAdder from './components/TaskAdder';
@@ -10,30 +10,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import './css/MainApp.css'; 
 
 const MainApp: React.FC = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  const { userId } = location.state || {};  // Get userId from the passed state
   const [displayedTasks, setDisplayedTasks] = useState<Taskprops[]>([]);  // Displayed filtered tasks
   const activeFilter = useRef<'all' | 'completed' | 'notFinished'>('all');  // Track current filter
-  const tasksArray:Taskprops[] = useSelector((state: RootState) => state.tasks.taskArray);
-  const tasksAmount:number = tasksArray.filter(task => !task.completed).length;  // Count incomplete tasks
+  const tasksArray: Taskprops[] = useSelector((state: RootState) => state.tasks.taskArray);
+  const tasksAmount: number = tasksArray.filter(task => !task.completed).length;  // Count incomplete tasks
 
-
+  // Fetch tasks and validate the JWT
   useEffect(() => {
-    if (!userId) {
-      navigate('/login'); // Redirect to login if no userId
-    } else {
-      dispatch(fetchTasks(userId));  // Dispatch the thunk to fetch tasks
-    }
-  }, []); //changed here -- lookout
-
+    dispatch(fetchTasks(navigate));  // Pass navigate to the thunk for redirect on auth error
+  }, [dispatch, navigate]);
 
   // Function to update displayed tasks based on the selected filter
   const updateDisplayedTasks = (filter: 'all' | 'completed' | 'notFinished') => {
     activeFilter.current = filter;
     let filteredTasks: Taskprops[] = [];
-    
+
     switch (filter) {
       case 'all':
         filteredTasks = tasksArray;
@@ -59,15 +52,14 @@ const MainApp: React.FC = () => {
   return (
     <div className='mainapp-body'>
       <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-      <TaskFilter handleFilterChange={updateDisplayedTasks} activeFilter={activeFilter.current} />
-      <div className='mainapp-container'>
-        <TaskHeader tasksAmount={tasksAmount} />
-        <TaskList tasks={displayedTasks}  userId={userId} />  {/* Pass setTasks to TaskList */}
-        <TaskAdder userId={userId}  />  {/* Pass setTasks to TaskAdder */}
+        <TaskFilter handleFilterChange={updateDisplayedTasks} activeFilter={activeFilter.current} />
+        <div className='mainapp-container'>
+          <TaskHeader tasksAmount={tasksAmount} />
+          <TaskList tasks={displayedTasks} />  
+          <TaskAdder />  
+        </div>
       </div>
     </div>
-    </div>
-    
   );
 };
 

@@ -4,20 +4,18 @@ import { Taskprops } from './Task';
 
 interface TaskListProps {
   tasks: Taskprops[];
-  userId: string;
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, userId }) => {
+const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
   return (
     <div className="mainapp-tasks-container">
       {tasks.length > 0 ? (
         tasks.map((task, index) => (
           <Task
-            key={index}  
-            _id={task._id}  // Use _id as the task's identifier
+            key={task._id}  // Using _id as a unique key for the task
+            _id={task._id}
             title={task.title}
             completed={task.completed}
-            userId={userId}  // Assuming you have userId, this might also come from the task or parent
           />
         ))
       ) : (

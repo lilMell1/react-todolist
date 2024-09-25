@@ -1,32 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import '../css/Login.css';
-import { useEffect } from 'react';
 
-const Login = () => {
+const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-  
-  useEffect(() => {
-    // Clear history state on page load if you don't want to keep it
-      navigate('/login');  //clear the browser history when a user navigates back to the login page, ensuring they can’t use the "Forward" button to return to the app after logging out   
-  }, [navigate]);
-  
+
+  // Ensure user doesn't navigate back to login after login
+  // useEffect(() => {
+  //   navigate('/login', { replace: true });  // Replace navigation state to prevent "Back" navigation
+  // }, [navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3001/api/login', {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        'http://localhost:3001/api/login',  // Change to match the correct path
+        { username, password },
+        { withCredentials: true }  // Enable cookie handling
+      );
+      
 
-      if (response.status === 200 && response.data.userId) {
-        //console.log("userId from response:", response.data.userId);
-        navigate('/app', { state: { userId: response.data.userId } }); // state is a value to give the state
+      if (response.status === 200) {
+        setMessage('Login successful');
+        // Redirect to the app after successful login
+        navigate('/app');
       } else {
         setMessage('Login failed');
       }
