@@ -10,9 +10,9 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
   return (
     <div className="mainapp-tasks-container">
       {tasks.length > 0 ? (
-        tasks.map((task, index) => (
+        tasks.map((task) => (
           <Task
-            key={task._id}  // Using _id as a unique key for the task
+            key={task._id}  //dont tuch
             _id={task._id}
             title={task.title}
             completed={task.completed}

@@ -10,7 +10,8 @@ const Register: React.FC = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit: (e: React.FormEvent) => Promise<void|string> 
+  = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {

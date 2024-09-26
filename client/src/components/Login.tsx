@@ -9,32 +9,32 @@ const Login: React.FC = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  // Ensure user doesn't navigate back to login after login
+  // deletes snapshots of web
   // useEffect(() => {
   //   navigate('/login', { replace: true });  // Replace navigation state to prevent "Back" navigation
   // }, [navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit: (e: React.FormEvent) => Promise<void|string> = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       const response = await axios.post(
         'http://localhost:3001/api/login',  // Change to match the correct path
-        { username, password },
+        { username, password }, //request body
         { withCredentials: true }  // Enable cookie handling
       );
       
 
-      if (response.status === 200) {
+     // if (response.status === 200) {
         setMessage('Login successful');
         // Redirect to the app after successful login
         navigate('/app');
-      } else {
+     // } else {
         setMessage('Login failed');
-      }
+      //}
     } catch (error: any) {
       if (error.response && error.response.data) {
-        setMessage('Error: ' + error.response.data.message);
+        setMessage('Error: ' + error.response.data.message);  // priority to custom errors
       } else {
         setMessage('Error: ' + error.message);
       }

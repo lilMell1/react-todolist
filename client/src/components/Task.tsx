@@ -16,11 +16,11 @@ const Task: React.FC<Taskprops> = ({ title, completed, _id }) => {
   const [isCompleted, setIsCompleted] = useState(completed);
 
   // Function to handle completing/unchecking task
-  const toggleComplete = async () => {
+  const toggleComplete:() => Promise<void|string> = async () => {
     try {
       // Update the task's completed status on the backend
-      const updateUrl = `http://localhost:3001/api/tasks/${_id}`;  // No userId needed
-      await axios.put(updateUrl, { completed: !isCompleted }, { withCredentials: true }); // Send JWT with request
+      const updateUrl = `http://localhost:3001/api/tasks/${_id}`;  
+      await axios.put(updateUrl, { completed: !isCompleted }, { withCredentials: true }); // Send JWT with request (sends all cookies)
 
       // Change the button
       dispatch(toggleCompleteReducer(_id));
@@ -33,11 +33,11 @@ const Task: React.FC<Taskprops> = ({ title, completed, _id }) => {
   };
 
   // Function to delete the task
-  const deleteTask = async () => {
+  const deleteTask: () => Promise<void|string> = async () => {
     try {
-      const deleteUrl = `http://localhost:3001/api/tasks/${_id}`;  // No userId needed
+      const deleteUrl = `http://localhost:3001/api/tasks/${_id}`;  
       await axios.delete(deleteUrl, { withCredentials: true }); // Send JWT with request
-
+      
       // Dispatch the remove task action to Redux
       dispatch(deleteTaskReducer(_id));
     } catch (error) {

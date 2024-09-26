@@ -10,9 +10,10 @@ export interface IGetUserAuthInfoRequest extends Request {
   user?: { userId: string } // Adjust the type based on your JWT middleware
 }
 // Add a new task
-export const addTask = async (req: IGetUserAuthInfoRequest, res: Response) => {
+export const addTask: (req: IGetUserAuthInfoRequest, res: Response) => Promise<Response<string> | undefined>
+  = async (req: IGetUserAuthInfoRequest, res: Response) => {
   const { title } = req.body;  // Extract the title from the request body
-  const userId = req.user?.userId;  // Extract the userId from the JWT (set in your middleware)
+  const userId = req.user?.userId;  // Extract the userId from the JWT (from the middleware)
 
   try {
     const user: IUser | null = await User.findById(userId);
@@ -32,8 +33,8 @@ export const addTask = async (req: IGetUserAuthInfoRequest, res: Response) => {
 };
 
 // Update a task
-export const updateTask = async (req: IGetUserAuthInfoRequest, res: Response) => {
-  const { completed } = req.body;  // Extract completed status from the request body
+export const updateTask: (req: IGetUserAuthInfoRequest, res: Response) => Promise<Response<string> | undefined> 
+  = async (req: IGetUserAuthInfoRequest, res: Response) => {
   const userId = req.user?.userId;  // Extract the userId from the JWT
   const { taskId } = req.params;  // Extract the taskId from the URL parameters
 
@@ -48,7 +49,7 @@ export const updateTask = async (req: IGetUserAuthInfoRequest, res: Response) =>
       return res.status(404).json({ message: 'Task not found' });
     }
 
-    task.completed = completed !== undefined ? completed : task.completed;
+    task.completed = !task.completed
     await user.save();
 
     res.status(200).json(task);  // Return the updated task
@@ -58,23 +59,27 @@ export const updateTask = async (req: IGetUserAuthInfoRequest, res: Response) =>
   }
 };
 
-// Delete a task
-export const deleteTask = async (req: IGetUserAuthInfoRequest, res: Response) => {
+// Delete a task, returnes a string that says if deleted or not
+export const deleteTask: (req: IGetUserAuthInfoRequest, res: Response) => Promise<void|string>
+  = async (req: IGetUserAuthInfoRequest, res: Response) => {
   const userId = req.user?.userId;  // Extract the userId from the JWT
   const { taskId } = req.params;  // Extract the taskId from the URL parameters
 
   try {
     const user: IUser | null = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+     res.status(404).json({ message: 'User not found' });
+     return;
     }
 
     user.tasks.pull(taskId);  // Remove the task by taskId
     await user.save();
-
     res.status(200).json({ message: 'Task deleted successfully' });
+    return;
+    
   } catch (error) {
     console.error('Error deleting task:', error);
     res.status(500).json({ message: 'Failed to delete task' });
+    return;
   }
 };

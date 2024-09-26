@@ -16,8 +16,8 @@ const TaskAdder: React.FC = () => {
       try {
         // Send the new task to the server with JWT automatically sent via cookies
         const response = await axios.post<Taskprops>(
-          'http://localhost:3001/api/tasks', // No need for userId in the URL
-          { title: inputValue },
+          'http://localhost:3001/api/tasks', 
+          { title: inputValue }, // send the title in the body
           { withCredentials: true } // Send the cookie with JWT
         );
         

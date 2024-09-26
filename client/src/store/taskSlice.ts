@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { AppDispatch } from './store'; // Assuming you have set up your store and AppDispatch
-import { useNavigate } from 'react-router-dom';
+
 // Define the Task interface
 interface Task {
   _id: string;
@@ -20,15 +20,18 @@ const initialState: TaskState = {
 };
 
 // Thunk for fetching tasks (with JWT)
-export const fetchTasks = (navigate: (path: string) => void) => {
+
+export const fetchTasks: (navigate: (path: string) => void) => (dispatch: AppDispatch) => Promise<void>
+  = (navigate: (path: string) => void) => {
   return async (dispatch: AppDispatch) => {
-    console.log('Loading tasks...');
+    
+    // console.log('Loading tasks...');
     try {
       // Fetch tasks using JWT stored in cookies
       const response = await axios.get('http://localhost:3001/api/tasks', { withCredentials: true });
-      const tasks = response.data;
+      const tasks = response.data; // the full Task array in json format
 
-      // Dispatch the fetched tasks to the Redux store
+      // Dispatch the fetched tasks to the Redux store then it will render in front
       dispatch(loadTasks(tasks));
     } catch (error: any) {
       console.error('Error fetching tasks:', error);
