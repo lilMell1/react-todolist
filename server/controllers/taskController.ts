@@ -15,12 +15,12 @@ export const addTask: (req: IGetUserAuthInfoRequest, res: Response) => Promise<R
   const { title } = req.body;  // Extract the title from the request body
   const userId = req.user?.userId;  // Extract the userId from the JWT (from the middleware)
 
-  try {
-    const user: IUser | null = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+  const user: IUser | null = await User.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
 
+  try {
     const newTask: ITask = { title, completed: false };
     user.tasks.push(newTask);
     await user.save();
@@ -38,12 +38,12 @@ export const updateTask: (req: IGetUserAuthInfoRequest, res: Response) => Promis
   const userId = req.user?.userId;  // Extract the userId from the JWT
   const { taskId } = req.params;  // Extract the taskId from the URL parameters
 
-  try {
-    const user: IUser | null = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+  const user: IUser | null = await User.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
 
+  try {
     const task = user.tasks.id(taskId);  // Find the task by taskId
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
@@ -65,13 +65,13 @@ export const deleteTask: (req: IGetUserAuthInfoRequest, res: Response) => Promis
   const userId = req.user?.userId;  // Extract the userId from the JWT
   const { taskId } = req.params;  // Extract the taskId from the URL parameters
 
-  try {
-    const user: IUser | null = await User.findById(userId);
-    if (!user) {
-     res.status(404).json({ message: 'User not found' });
-     return;
-    }
+  const user: IUser | null = await User.findById(userId);
+  if (!user) {
+    res.status(404).json({ message: 'User not found' });
+    return;
+  }
 
+  try {
     user.tasks.pull(taskId);  // Remove the task by taskId
     await user.save();
     res.status(200).json({ message: 'Task deleted successfully' });

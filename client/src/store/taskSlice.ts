@@ -21,25 +21,31 @@ const initialState: TaskState = {
 
 // Thunk for fetching tasks (with JWT)
 
-export const fetchTasks: (navigate: (path: string) => void) => (dispatch: AppDispatch) => Promise<void>
-  = (navigate: (path: string) => void) => {
+export const fetchTasks: (navigate: (path: string) => void) => (dispatch: AppDispatch) => Promise<void> = (navigate) => {
   return async (dispatch: AppDispatch) => {
-    
-    // console.log('Loading tasks...');
     try {
-      // Fetch tasks using JWT stored in cookies
+      // Make the request to the API to fetch tasks
       const response = await axios.get('http://localhost:3001/api/tasks', { withCredentials: true });
-      const tasks = response.data; // the full Task array in json format
-
-      // Dispatch the fetched tasks to the Redux store then it will render in front
+      
+      // Handle 200 OK - Dispatch tasks to the Redux store
+      const tasks = response.data;
       dispatch(loadTasks(tasks));
-    } catch (error: any) {
-      console.error('Error fetching tasks:', error);
 
-      // Handle authentication errors and redirect to login if token is invalid or expired
-      if (error.response?.status === 401 || error.response?.status === 403) {
-        console.log('Authentication error. Redirecting to login...');
-        navigate('/login');  // Redirect to login
+    } catch (error: any) {
+      const status = error.response?.status;
+
+      // Handle 401 User not found, redirect to login (from the controller)
+      if (status === 401) {
+        console.error('User not found, redirecting to login');
+        navigate('/login');  // Redirect to login if user is not found (401)
+      
+      // Handle 500 Server error
+      } else if (status === 500) {
+        console.error('Server error: Failed to fetch tasks');
+        // Optionally, you can dispatch an error state or show a notification
+      } else {
+        // Handle other unexpected errors
+        console.error('Unexpected error:', error);
       }
     }
   };
