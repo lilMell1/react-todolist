@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
-import MainApp from '../src/MainApp';  
+import MainApp from './TasksPage';  
 import store from "./store/store"
 import { Provider } from 'react-redux';
 

@@ -7,10 +7,8 @@ import bcrypt from 'bcrypt';
 
 dotenv.config();  //  loads environment variables from .env file into process.env
 const SECRET_KEY = process.env.SECRET_KEY as string;
-const saltRounds = 10;  // amount of times the password will be hashed
+const saltRounds = 10;  
 
-//Promise is an object representing intermediate state of operation which is guaranteed to complete its execution at some point in future.
-// Register user
 export const registerUser:(req: Request, res: Response) => Promise<Response<string> | undefined>
   = async (req: Request, res: Response) => {
   const { username, password }: { username: string; password: string }  = req.body;
@@ -20,7 +18,7 @@ export const registerUser:(req: Request, res: Response) => Promise<Response<stri
     return res.status(400).json({ message: 'User already exists' });
   }
   
-  const hashedPassword = await bcrypt.hash(password, saltRounds); // the salt embedded in the hash itself
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   try {
     const newUser: IUser = new User({ username: username, password: hashedPassword, tasks: [] });
@@ -32,18 +30,17 @@ export const registerUser:(req: Request, res: Response) => Promise<Response<stri
   }
 };
 
-// Login user with JWT and HTTP-only cookie
 export const loginUser: (req: Request, res: Response) => Promise<void|string|any> = async (req: Request, res: Response) => {
   const { username, password }: { username: string; password: string } = req.body;
 
   const user: IUser | null = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid username or password' });
+      return res.status(400).json({ message: 'No such user exists, create a new user!' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid username or password' });
+      return res.status(400).json({ message: 'Incorrect password' });
     }
   
     try {
@@ -64,8 +61,3 @@ export const loginUser: (req: Request, res: Response) => Promise<void|string|any
     }
 };
 
-// // Logout user and clear JWT cookie
-// export const logoutUser = async (req: Request, res: Response) => {
-//   res.clearCookie('token');  // Clear the JWT cookie
-//   res.status(200).json({ message: 'Logout successful' });
-// };

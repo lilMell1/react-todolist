@@ -9,30 +9,22 @@ const Login: React.FC = () => {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  // deletes snapshots of web
-  // useEffect(() => {
-  //   navigate('/login', { replace: true });  // Replace navigation state to prevent "Back" navigation
-  // }, [navigate]);
 
   const handleSubmit: (e: React.FormEvent) => Promise<void|string> = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        'http://localhost:3001/api/login',  // Change to match the correct path
-        { username, password }, //request body
-        { withCredentials: true }  // Enable cookie handling
+      // if returned with error (cannot login), wont navigate
+       await axios.post(
+        'http://localhost:3001/api/login',  
+        { username, password }, 
+        { withCredentials: true }  
       );
       
-
-     // if (response.status === 200) {
         setMessage('Login successful');
-        // Redirect to the app after successful login
         navigate('/app');
-     // } else {
-        setMessage('Login failed');
-      //}
     } catch (error: any) {
+        setMessage('Login failed');
       if (error.response && error.response.data) {
         setMessage('Error: ' + error.response.data.message);  // priority to custom errors
       } else {
@@ -45,11 +37,11 @@ const Login: React.FC = () => {
     <div className="login-body">
       <div className="login-divider">
         <div className="login-coolpicture">
-          <img src="/minimonimmm.png" alt="Minions Background" style={{width:'300px', height:'350px'}} />
+          <img src="/minimonimmm.png" alt="Minions Background"/>
         </div>
-        <div>
+        <div className='login-toCenter' >
           <h2>Login</h2>
-          <form onSubmit={handleSubmit}>
+          <form style={{width:"100%"}} onSubmit={handleSubmit}>
             <input
               className="login-input"
               type="text"
@@ -64,9 +56,9 @@ const Login: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="submit">Login</button>
-          </form>
-          <p>{message}</p>
+            <button className="login-input" type="submit">Login</button>
+          </form >
+          <p style={{wordBreak:"break-word"}}>{message}</p>
           <p>
             Don't have an account? <Link to="/register">Register here</Link>
           </p>

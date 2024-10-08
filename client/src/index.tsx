@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App from './FrontRoutes';
 
 const container = document.getElementById('root'); //the div that containes the web, 
 

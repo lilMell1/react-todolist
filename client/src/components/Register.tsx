@@ -42,9 +42,9 @@ const Register: React.FC = () => {
         <div className="register-coolpicture">
           <img src="/minimon.png" alt="Minions Background" />
         </div>
-        <div>
+        <div className='register-toCenter'> 
           <h2>Register</h2>
-          <form onSubmit={handleSubmit}>
+          <form style={{width:"100%"}} onSubmit={handleSubmit}>
             <input
               className="register-input"
               type="text"

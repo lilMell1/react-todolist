@@ -1,14 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-dotenv.config();  //  loads environment variables from .env file into process.env
+import {User} from '../models/User';  // Import your User model
+dotenv.config();  // Loads environment variables from .env file into process.env
+
 const SECRET_KEY = process.env.SECRET_KEY as string;
+
+// Define your extended request interface to include the user object
 export interface IMiddleWareReq extends Request {
-  user?: { userId: string; }; // Adjust the type based on your JWT middleware
+  user?: { userId: string; };
 }
-export const authenticateJWT: (req: IMiddleWareReq, res: Response, next: NextFunction) => Response<void|string> | undefined 
-  = (req: IMiddleWareReq, res: Response, next: NextFunction) => {
-  const token :string= req.cookies.token;  // JWT is stored in the cookies
+
+// JWT Authentication Middleware
+export const authenticateJWT = async (req: IMiddleWareReq, res: Response, next: NextFunction): Promise<Response<void|string> | undefined> => {
+  const token: string = req.cookies.token;  // Assuming JWT is stored in cookies
 
   if (!token) {
     return res.status(403).json({ message: 'Token is missing' });
@@ -18,11 +23,17 @@ export const authenticateJWT: (req: IMiddleWareReq, res: Response, next: NextFun
     // Verify and decode the token
     const decoded = jwt.verify(token, SECRET_KEY) as { userId: string };
 
-    // Attach userId and other info to the request object, and pass it to the next function (getUserTasks)
-    req.user = { userId: decoded.userId};
+    const user = await User.findById(decoded.userId);  
     
-    next();
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });  
+    }
+
+    // Attach the userId to the req object
+    req.user = { userId: decoded.userId };
+
+    next();  // Proceed to the next middleware or route handler
   } catch (error) {
-    return res.status(401).json({ message: 'Invalid or expired token' }); // can be not found user
+    return res.status(401).json({ message: 'Invalid or expired token' });  // Handle invalid token or expiration
   }
 };

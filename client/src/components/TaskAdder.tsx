@@ -1,6 +1,6 @@
 import React, { useState, KeyboardEvent } from 'react';
 import axios from 'axios';
-import { Taskprops } from './Task';
+import { Taskprops } from '../interfaces/Task.interface';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
 import { addTaskReducer } from '../store/taskSlice';
@@ -48,7 +48,7 @@ const TaskAdder: React.FC = () => {
   return (
     <div style={{ height: '15%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <input
-        className="mainapp-input-info"
+        className="tasksPage-input-info"
         type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}

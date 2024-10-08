@@ -1,27 +1,24 @@
 import React from 'react';
-interface TaskFilterProps {
-  handleFilterChange: (filter: 'all' | 'completed' | 'notFinished') => void;
-  activeFilter: 'all' | 'completed' | 'notFinished';
-}
+import {TaskFilterProps} from '../interfaces/TaskFilter.interface'
 
 const TaskFilter: React.FC<TaskFilterProps> = ({ handleFilterChange, activeFilter }) => {
  
   return (
-    <div className="mainapp-filter-buttons">
+    <div className="tasksPage-filter-buttons">
       <button
-        className={`mainapp-filter-button ${activeFilter === 'all' ? 'active' : ''}`} 
+        className={`tasksPage-filter-button ${activeFilter === 'all' ? 'active' : ''}`} 
         onClick={() => handleFilterChange('all')}
       >
         Show All
       </button>
       <button
-        className={`mainapp-filter-button ${activeFilter === 'completed' ? 'active' : ''}`}
+        className={`tasksPage-filter-button ${activeFilter === 'completed' ? 'active' : ''}`}
         onClick={() => handleFilterChange('completed')}
       >
         Completed
       </button>
       <button
-        className={`mainapp-filter-button ${activeFilter === 'notFinished' ? 'active' : ''}`}
+        className={`tasksPage-filter-button ${activeFilter === 'notFinished' ? 'active' : ''}`}
         onClick={() => handleFilterChange('notFinished')}
       >
         Pending

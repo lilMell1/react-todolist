@@ -1,25 +1,23 @@
 import React from 'react';
-import Task from './Task';
-import { Taskprops } from './Task';
+import {TaskListProps} from '../interfaces/TaskList.interface'
+import Task from '../components/Task';
 
-interface TaskListProps {
-  tasks: Taskprops[];
-}
-
-const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
+const TaskList: React.FC<TaskListProps> = ({ tasks, isLoading }) => {
   return (
-    <div className="mainapp-tasks-container">
-      {tasks.length > 0 ? (
+    <div className="tasksPage-tasks-container">
+      {isLoading ? (
+        <p style={{ color: 'white' }}>Loading tasks...</p>  // Show loading message when isLoading is true
+      ) : tasks.length > 0 ? (
         tasks.map((task) => (
           <Task
-            key={task._id}  //dont tuch
+            key={task._id}  // Don't touch this as requested
             _id={task._id}
             title={task.title}
             completed={task.completed}
           />
         ))
       ) : (
-        <p style={{ color: 'white' }}>No tasks to show</p>
+        <p style={{ color: 'white' }}>No tasks to show</p>  // Show "No tasks to show" if tasks array is empty
       )}
     </div>
   );

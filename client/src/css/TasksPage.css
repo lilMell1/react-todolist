@@ -3,7 +3,7 @@
 body{
   margin: 0;
 }
-.mainapp-body {
+.tasksPage-body {
   height: 100vh;
   width: 100vw;
   background-color: orange;
@@ -15,7 +15,7 @@ body{
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-.mainapp-container {
+.tasksPage-container {
   display: flex;
   flex-direction: column;
   border: 4px solid darkblue;
@@ -25,7 +25,7 @@ body{
   width: 50vw;
 }
 
-.mainapp-container .mainapp-pending-text {
+.tasksPage-container .mainapp-pending-text {
   display: flex;
   height: fit-content;
   /* border: 2px solid purple; */
@@ -42,7 +42,7 @@ h1 {
   font-size: x-large;
 }
 
-.mainapp-tasks-container {
+.tasksPage-tasks-container {
   /* border: 5px solid red;  */
   display: flex;
   flex-direction: column;
@@ -54,7 +54,7 @@ h1 {
   border-top: 2px solid rgba(128, 128, 128, 0.438);
 }
 
-.mainapp-task-container {
+.tasksPage-task-container {
   display: flex;
   border: 2px solid rgb(175, 159, 159);
   border-radius: 7px;
@@ -64,7 +64,7 @@ h1 {
   align-items: center;
 }
 
-.mainapp-task-container p {
+.tasksPage-task-container p {
   display: flex;
   align-items: center;
   padding-left: 0.5vw;
@@ -75,7 +75,7 @@ h1 {
   word-break: break-all;
 }
 
-.mainapp-bring-closer {
+.tasksPage-bring-closer {
   display: flex;
   /* border: 2px solid blue; */
   max-width: 60%;
@@ -85,7 +85,7 @@ h1 {
   justify-content: space-between;  
 }
 
-.mainapp-btn {
+.tasksPage-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,7 +117,7 @@ button:active {
   transform: translateY(3px);
 }
 
-.mainapp-input-info{
+.tasksPage-input-info{
   /* border: 2px solid red; */
   width: 80%;
   align-self: center;
@@ -127,7 +127,7 @@ button:active {
   padding-left: 2vw;
   font-size: x-large;
 }
-.mainapp-filter-button {
+.tasksPage-filter-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,7 +147,7 @@ button:active {
 }
 
 /* Container for the buttons */
-.mainapp-filter-buttons {
+.tasksPage-filter-buttons {
   display: flex;
   justify-content: center;
   gap: 10px;
@@ -156,17 +156,17 @@ button:active {
 }
 
 /* Focused button styles */
-.mainapp-filter-button:focus {
+.tasksPage-filter-button:focus {
   border: 2px solid white; /* White border when button is focused */
 }
 
 /* Hover effect */
-.mainapp-filter-button:hover {
+.tasksPage-filter-button:hover {
   background-color: #45a049; /* Slightly darker green when hovered */
 }
 
 /* Active state for the button */
-.mainapp-filter-button.active {
+.tasksPage-filter-button.active {
   transform: translateY(2px);
   background-color: #2e7d32; /* Darker green to indicate active state */
   border: 2px solid white; /* White border when active */
