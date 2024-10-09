@@ -1,15 +1,14 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import {User} from '../models/User';  // Import your User model
+import {IMiddleWareReq} from '../interfaces/AuthMiddleware.interface'
 dotenv.config();  // Loads environment variables from .env file into process.env
 
 const SECRET_KEY = process.env.SECRET_KEY as string;
 
 // Define your extended request interface to include the user object
-export interface IMiddleWareReq extends Request {
-  user?: { userId: string; };
-}
+
 
 // JWT Authentication Middleware
 export const authenticateJWT = async (req: IMiddleWareReq, res: Response, next: NextFunction): Promise<Response<void|string> | undefined> => {

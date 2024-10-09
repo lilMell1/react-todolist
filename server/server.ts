@@ -12,7 +12,7 @@ const app = express();
 const DATABASE_URL = process.env.DATABASE_URL as string;
 
 app.use(express.json());
-app.use(cors({
+app.use(cors({ // what domains resources i approve
   origin: 'http://localhost:3000',  // Your frontend's origin
   credentials: true,               // Allow credentials (cookies)
 }));

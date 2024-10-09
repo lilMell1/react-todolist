@@ -7,17 +7,18 @@ export interface IGetUserAuthInfoRequest extends Request {
 }
 
 
-export const getUserTasks: (req: IGetUserAuthInfoRequest, res: Response) => Promise<void|string|any> 
+export const getUserTasks: (req: IGetUserAuthInfoRequest, res: Response) => Promise<void> 
   = async (req: IGetUserAuthInfoRequest, res: Response) => {
   const userId = req.user!.userId; 
 
   const user: IUser | null = await User.findById(userId);
-    if (!user) {
-     res.status(401).json({ message: 'User not found' });
-    }
+  if (!user) {
+    res.status(401).json({ message: 'User not found' });
+    return;
+  }
 
   try {  
-    return res.status(200).json(user!.tasks);
+    res.status(200).json(user!.tasks);
      
   } catch (error) {
     console.error('Error fetching tasks:', error);

@@ -4,7 +4,6 @@ import { authenticateJWT } from '../middlewares/authMiddleware';
 
 const router = express.Router();
 
-//makes so all routes will go trough this function
 router.use(authenticateJWT);
 
 // Add new task to user

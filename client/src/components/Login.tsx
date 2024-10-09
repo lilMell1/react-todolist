@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import '../css/Login.css';
-
+const API_URL:string|undefined = process.env.REACT_APP_API_BASE_URL;
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -16,19 +16,18 @@ const Login: React.FC = () => {
     try {
       // if returned with error (cannot login), wont navigate
        await axios.post(
-        'http://localhost:3001/api/login',  
+        `${API_URL}/login`,  
         { username, password }, 
         { withCredentials: true }  
       );
       
-        setMessage('Login successful');
         navigate('/app');
     } catch (error: any) {
         setMessage('Login failed');
       if (error.response && error.response.data) {
         setMessage('Error: ' + error.response.data.message);  // priority to custom errors
       } else {
-        setMessage('Error: ' + error.message);
+        setMessage('couldnt log in.');
       }
     }
   };

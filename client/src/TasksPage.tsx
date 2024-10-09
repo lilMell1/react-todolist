@@ -3,14 +3,14 @@ import TaskList from './components/TaskList';
 import TaskAdder from './components/TaskAdder';
 import { RootState } from './store/store';
 import { useSelector } from 'react-redux';
-import { useFetchTasks } from './hooks/useFetchTasks';  // Import the custom hook
-import { useTaskFilter } from './hooks/useTaskFilter';  // Import the custom hook
+import { useFetchTasks } from './hooks/useFetchTasks'; 
+import { useTaskFilter } from './hooks/useTaskFilter'; 
 import './css/TasksPage.css'; 
 
 const TasksPage: React.FC = () => {
   const tasksArray = useSelector((state: RootState) => state.tasks.taskArray);
   
-  const isLoading = useFetchTasks();  // Fetch tasks with custom hook
+  const isLoading = useFetchTasks();  // Fetch tasks custom hook
   const { displayedTasks, tasksAmount, activeFilter, updateDisplayedTasks } = useTaskFilter(tasksArray);  // Handle filters with custom hook
 
   return (

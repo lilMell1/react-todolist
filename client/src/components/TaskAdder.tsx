@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
 import { addTaskReducer } from '../store/taskSlice';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+const API_URL:string|undefined = process.env.REACT_APP_API_BASE_URL;
 
 const TaskAdder: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
@@ -14,30 +15,20 @@ const TaskAdder: React.FC = () => {
   const handleKeyDown = async (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {
       try {
-        // Send the new task to the server with JWT automatically sent via cookies
         const response = await axios.post<Taskprops>(
-          'http://localhost:3001/api/tasks', 
-          { title: inputValue }, // send the title in the body
-          { withCredentials: true } // Send the cookie with JWT
+          `${API_URL}/tasks`, 
+          { title: inputValue },
+          { withCredentials: true } 
         );
         
-        // Check if the response status is successful
-        if (response.status === 201 && response.data) {
-          // Dispatch the newly created task from the server response
-          dispatch(addTaskReducer(response.data));
-          
-          setInputValue('');  // Clear the input field
-        } else {
-          // Handle any unexpected response
-          alert('There was an error creating your task!');
-        }
+          dispatch(addTaskReducer(response.data));       
+          setInputValue('');  
+      
       } catch (error: any) {
-        // Log the error and alert the user
-        if (error.response?.status === 404) { // 404 means the user is not found (likely the user was deleted while logged in)
+        if (error.response?.status === 404) { 
           alert('User not found. Redirecting to login...');
-          // Redirect the user to the login page
           navigate('/login');
-        } else {  // no error.response from the server, might be a network error or another issue
+        } else { 
           console.error('Error adding task:', error);
           alert('Failed to add task. Please try again later.');
         }

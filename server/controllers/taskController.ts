@@ -5,14 +5,15 @@ import { ITask } from '../interfaces/Task.interface';
 import { Types } from 'mongoose'; 
 
 // Add a new task
-export const addTask = async (req: IGetUserAuthInfoRequest, res: Response): Promise<Response | undefined> => {
+export const addTask = async (req: IGetUserAuthInfoRequest, res: Response): Promise<void> => {
   const { title } = req.body;
   const userId = req.user?.userId;  // Extract the userId from the JWT (from middleware)
 
   try {
     const user: IUser | null = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      res.status(404).json({ message: 'User not found' });
+      return;
     }
 
     const newTask: ITask = { _id: new Types.ObjectId(), title, completed: false };
@@ -22,30 +23,33 @@ export const addTask = async (req: IGetUserAuthInfoRequest, res: Response): Prom
 
     const addedTask = user.tasks.id(newTask._id);
 
-    return res.status(201).json(addedTask);
-
+    res.status(201).json(addedTask);
   } catch (error) {
     console.error('Error adding task:', error);
-    return res.status(500).json({ message: 'Failed to add task' });
+    res.status(500).json({ message: 'Failed to add task' });
   }
 };
 
+
 // Update a task
-export const updateTask: (req: IGetUserAuthInfoRequest, res: Response) => Promise<Response<string> | undefined> 
+export const updateTask: (req: IGetUserAuthInfoRequest, res: Response) => Promise<void> 
   = async (req: IGetUserAuthInfoRequest, res: Response) => {
   const userId = req.user?.userId; 
   const { taskId } = req.params;  
 
   const user: IUser | null = await User.findById(userId);
   if (!user) {
-    return res.status(404).json({ message: 'User not found' });
+     res.status(404).json({ message: 'User not found' });
+     return;
+  }
+
+  const task = user.tasks.id(taskId);  
+  if (!task) {
+     res.status(404).json({ message: 'Task not found' });
+     return;
   }
 
   try {
-    const task = user.tasks.id(taskId);  
-    if (!task) {
-      return res.status(404).json({ message: 'Task not found' });
-    }
 
     task.completed = !task.completed
     await user.save();
@@ -58,7 +62,7 @@ export const updateTask: (req: IGetUserAuthInfoRequest, res: Response) => Promis
 };
 
 // Delete a task, returnes a string that says if deleted or not
-export const deleteTask: (req: IGetUserAuthInfoRequest, res: Response) => Promise<void|string>
+export const deleteTask: (req: IGetUserAuthInfoRequest, res: Response) => Promise<void>
   = async (req: IGetUserAuthInfoRequest, res: Response) => {
   const userId = req.user?.userId; 
   const { taskId } = req.params;  

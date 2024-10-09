@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import '../css/Register.css';
+const API_URL:string|undefined = process.env.REACT_APP_API_BASE_URL;
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -19,19 +20,17 @@ const Register: React.FC = () => {
       return;
     }
 
-    try { // if axios wont returen error... || could use '.then' and '.catch' instaed of setting it as res and using try and catch
-      const res = await axios.post('http://localhost:3001/api/register', { username, password }); // if i dont need to send data to console i dont need 'const res'
+    try { 
+      await axios.post(`${API_URL}/register`, { username, password }); // if i dont need to send data to console i dont need 'const res'
       setMessage('Registration successful! Redirecting to login...');
-      console.log(res.data); // the data is the message that came in
-      // Redirect to the login page after successful registration
       setTimeout(() => {
         navigate('/login');
       }, 2000); // Redirect after 2 seconds
-    } catch (error: any) { // else it returned an error
-      if (error.response && error.response.data) { // error response from the server
+    } catch (error: any) { 
+      if (error.response && error.response.data) { 
         setMessage('Error: ' + error.response.data.message);
       } else {
-        setMessage('Error: ' + error.message); // any other error (priority to server response)
+        setMessage('Error: ' + error.message);
       }
     }
   };
